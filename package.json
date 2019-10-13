@@ -1,6 +1,6 @@
 {
   "name": "rollup-plugin-module-replacement",
-  "version": "0.0.0",
+  "version": "1.0.0",
   "description": "Replace modules with Rollup",
   "main": "dist/rollup-plugin-module-replacement.js",
   "module": "dist/rollup-plugin-module-replacement.es2015.js",
