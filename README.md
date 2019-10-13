@@ -1,4 +1,8 @@
 # rollup-plugin-module-replacement
+[![Build Status](https://travis-ci.com/Acionyx/rollup-plugin-module-replacement.svg?branch=master)](https://travis-ci.com/Acionyx/rollup-plugin-module-replacement)
+[![dependencies Status](https://david-dm.org/Acionyx/rollup-plugin-module-replacement/status.svg)](https://david-dm.org/Acionyx/rollup-plugin-module-replacement)
+[![devDependencies Status](https://david-dm.org/Acionyx/rollup-plugin-module-replacement/dev-status.svg)](https://david-dm.org/Acionyx/rollup-plugin-module-replacement?type=dev)
+[![Coverage Status](https://coveralls.io/repos/github/Acionyx/rollup-plugin-module-replacement/badge.svg?branch=master)](https://coveralls.io/github/Acionyx/rollup-plugin-module-replacement?branch=master)
 
 Replace modules when bundling packages with Rollup.
 
