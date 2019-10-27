@@ -11,7 +11,7 @@ This can be useful for allowing different behaviour between builds.
 
 Plugin can be used for simple aliasing too.
 
-Furthermore it provides a way to chain aliasing with any resolving plugin 
+Furthermore it provides a way to chain aliasing with any resolving plugin
 (like [`rollup-plugin-node-resolve`](https://www.npmjs.com/package/rollup-plugin-node-resolve)), see examples below.
 
 Let's take a look at an example:
@@ -42,8 +42,8 @@ export default {
 If `replacement` is a String, `find` will be simply replaced with it.
 If `replacement` is a function, it is expected to return a String containing new path.
 
-Plugin **does not make any resolve logic under the hood**. 
-If you want files to be resolved with any plugin, see **Advanced usage** section below. 
+Plugin **does not make any resolve logic under the hood**.
+If you want files to be resolved with any plugin, see **Advanced usage** section below.
 
 For Webpack users: This is a plugin to basically mimic the [`NormalModuleReplacementPlugin`](https://www.npmjs.com/package/module-replace-webpack-plugin) functionality in Rollup.
 
@@ -51,6 +51,8 @@ For Webpack users: This is a plugin to basically mimic the [`NormalModuleReplace
 
 ```
 $ npm install --save-dev rollup-plugin-module-replacement
+OR
+$ yarn add -D rollup-plugin-module-replacement
 ```
 
 #
@@ -97,31 +99,35 @@ import resolve from "rollup-plugin-node-resolve";
 
 const customResolver = resolve({
   extensions: [".mjs", ".js", ".jsx", ".json", ".sass", ".scss"]
-}).resolveId;
+});
 const projectRootDir = path.resolve(__dirname);
 
 export default {
   // ...
   plugins: [
-    replacement({
-      entries: [
-        {
-          find: "src",
-          replacement: (importeeId, importerId) =>
-            customResolver(
-              importeeId.replace("src", path.resolve(projectRootDir, "src")),
-              importerId
-            )
-        }
-      ]
-    }),
+    replacement(
+      {
+        entries: [
+          {
+            find: "src",
+            replacement: path.resolve(projectRootDir, "src")
+            // OR place `customResolver` here. See explanation below.
+          }
+        ]
+      },
+      customResolver
+    ),
     resolve()
   ]
 };
 ```
 
-In exampled below we made an alias `src` and still keep node-resolve algorithm for your files that are "aliased" with `src`.
+In example below we made an alias `src` and still keep node-resolve algorithm for your files that are "aliased" with `src` by passing `customResolver` option.
 Also we keep `resolve()` plugin separately in plugins list for other files that are not aliased with `src`.
+
+`customResolver` option can be passed inside each entree too for granular control over resolving.
+
+`customResolver` also can be your own function, not plugin.
 
 In same manner you can chain other plugins by using [`rollup-plugin-module-replacement`](https://www.npmjs.com/package/rollup-plugin-module-replacement) architecture.
 

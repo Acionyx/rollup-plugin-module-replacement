@@ -28,11 +28,11 @@ const normalizeId = id => {
   return id;
 };
 
-export default function alias(options = {}) {
-  const entries = options.entries ? options.entries : [];
-
+export default function replacement(
+  options = { entries: [], customResolver: null }
+) {
   // No replacements?
-  if (!entries || entries.length === 0) {
+  if (!options.entries || options.entries.length === 0) {
     return {
       resolveId: noop
     };
@@ -44,7 +44,7 @@ export default function alias(options = {}) {
       const importerId = normalizeId(importer);
 
       // First match is supposed to be the correct one
-      const matchedEntry = entries.find(entry =>
+      const matchedEntry = options.entries.find(entry =>
         matches(entry.find, importeeId)
       );
       if (!matchedEntry || !importerId) {
@@ -61,6 +61,27 @@ export default function alias(options = {}) {
         updatedId = normalizeId(
           matchedEntry.replacement(importeeId, importerId)
         );
+      }
+
+      let customResolver = null;
+      if (typeof matchedEntry.customResolver === "function") {
+        customResolver = matchedEntry.customResolver;
+      } else if (
+        typeof matchedEntry.customResolver === "object" &&
+        typeof matchedEntry.customResolver.resolveId === "function"
+      ) {
+        customResolver = options.customResolver.resolveId;
+      } else if (typeof options.customResolver === "function") {
+        customResolver = options.customResolver;
+      } else if (
+        typeof options.customResolver === "object" &&
+        typeof options.customResolver.resolveId === "function"
+      ) {
+        customResolver = options.customResolver.resolveId;
+      }
+
+      if (customResolver) {
+        return customResolver(updatedId, importerId);
       }
 
       return updatedId;
