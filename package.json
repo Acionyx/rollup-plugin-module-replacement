@@ -8,7 +8,7 @@
   "scripts": {
     "prebuild": "rimraf dist",
     "build": "rollup -c",
-    "prepublish": "npm run build",
+    "prepublishOnly": "npm run build",
     "lint": "eslint . --fix",
     "pretest": "npm-run-all -p build lint",
     "test": "ava test/index.js",
